@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agenda Online</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -10,10 +11,10 @@
 <div class="container">
   <h1>Agendamento</h1>
 
-  <input type="text" id="nome" placeholder="Seu nome">
+  <input type="text" id="nome" placeholder="Seu nome" required>
   <input type="email" id="email" placeholder="Seu email">
-  <input type="date" id="data">
-  <input type="time" id="hora">
+  <input type="date" id="data" required>
+  <input type="time" id="hora" required>
 
   <button onclick="agendar()">Agendar</button>
 
@@ -27,5 +28,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
