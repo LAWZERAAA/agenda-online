@@ -8,12 +8,14 @@ const START_DAY_MIN = 8 * 60;
 const END_DAY_MIN   = 17 * 60;
 const SLOT_MIN      = 60;
 
+
 const servicos = [
-  { id: "estetica_pes",       nome: "Estética dos Pés",         precoTexto: "R$ 40,00",              duracao: 60 },
-  { id: "estetica_maos",      nome: "Estética das Mãos",        precoTexto: "R$ 35,00",              duracao: 60 },
-  { id: "podologia_completa", nome: "Podologia Completa",       precoTexto: "a partir de R$ 100,00", duracao: 60 },
-  { id: "plastica_pes",       nome: "Plástica dos Pés",         precoTexto: "R$ 80,00",              duracao: 60 }
+  { id: "estetica_pes", nome: "Estética dos Pés", precoTexto: "R$ 40,00", duracao: 60 },
+  { id: "estetica_maos", nome: "Estética das Mãos", precoTexto: "R$ 35,00", duracao: 60 },
+  { id: "podologia_completa", nome: "Podologia Completa", precoTexto: "a partir de R$ 100,00", duracao: 60 },
+  { id: "plastica_pes", nome: "Plástica dos Pés", precoTexto: "R$ 80,00", duracao: 60 }
 ];
+
 
 let adminLogado = false;
 let cacheAgenda = [];
@@ -432,7 +434,6 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   const horaSel = document.getElementById("hora");
   if (horaSel) { horaSel.innerHTML = ""; horaSel.disabled = true; }
 
-  popularServicos();
 
   const msg = document.getElementById("msgHorarios");
   if (msg) msg.textContent = "Selecione data e serviço.";
@@ -440,13 +441,15 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   // Eventos
   document.getElementById('data')?.addEventListener('change', atualizarHorarios);
   document.getElementById('btnAgendar')?.addEventListener('click', agendar);
-  document.getElementById('btnMostrarLogin')?.addEventListener('click', ()=>{
-    const loginBox = document.getElementById("adminLogin");
-    const adminArea = document.getElementById("adminArea");
-    if(adminArea && adminArea.style.display === "block") return;
-    if(loginBox) loginBox.style.display="block";
-    document.getElementById("adminUser")?.focus();
-  });
+  
+document.getElementById('btnMostrarLogin')?.addEventListener('click', ()=>{
+  const loginBox = document.getElementById("adminLogin");
+  const adminArea = document.getElementById("adminArea");
+  if(adminArea && adminArea.style.display === "block") return; // já logado
+  if(loginBox) loginBox.style.display="block";                  // abre o popup
+  document.getElementById("adminUser")?.focus();
+});
+
   document.getElementById('btnLogin')?.addEventListener('click', loginAdmin);
   document.getElementById('btnLogout')?.addEventListener('click', logoutAdmin);
 
