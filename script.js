@@ -1,41 +1,53 @@
 const SUPABASE_URL = "https://owfpyuwxpbfhdysokqwc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_RC2UVIHXkvrbur2BRN2IXg_p6lQ99rZ";
+const SUPABASE_KEY = "SUA_CHAVE_AQUI";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function agendar() {
   const nome = document.getElementById("nome").value;
-  const email = document.getElementById("email").value;
+  const telefone = document.getElementById("telefone").value;
   const data = document.getElementById("data").value;
   const hora = document.getElementById("hora").value;
 
   if (!nome || !data || !hora) {
-    alert("Preencha os campos obrigatórios");
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  // 🔒 Verificar se já existe agendamento nesse horário
+  const { data: existente } = await supabaseClient
+    .from("agendamentos")
+    .select("*")
+    .eq("data", data)
+    .eq("hora", hora);
+
+  if (existente.length > 0) {
+    alert("Horário já agendado!");
     return;
   }
 
   const { error } = await supabaseClient
     .from("agendamentos")
-    .insert([{ nome, email, data, hora }]);
+    .insert([{ nome, telefone, data, hora }]);
 
   if (error) {
-    console.log(error);
-    alert("Erro ao salvar agendamento");
-  } else {
-    alert("Agendamento realizado com sucesso!");
+    alert("Erro ao salvar");
+    return;
   }
+
+  alert("Agendamento confirmado!");
+
+  // 📲 WhatsApp automático (abre mensagem pronta)
+  const mensagem = `Olá ${nome}, seu agendamento foi confirmado para ${data} às ${hora}`;
+  const link = `https://wa.me/55${telefone}?text=${encodeURIComponent(mensagem)}`;
+  window.open(link, "_blank");
 }
 
-async function listarAgendamentos() {
-  const { data, error } = await supabaseClient
+async function listarAdmin() {
+  const { data } = await supabaseClient
     .from("agendamentos")
     .select("*")
     .order("data", { ascending: true });
-
-  if (error) {
-    console.log(error);
-    return;
-  }
 
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
@@ -44,8 +56,19 @@ async function listarAgendamentos() {
     lista.innerHTML += `
       <div class="agendamento">
         <strong>${item.nome}</strong><br>
-        ${item.data} às ${item.hora}
+        ${item.data} às ${item.hora}<br>
+        <button onclick="cancelar(${item.id})">Cancelar</button>
       </div>
     `;
   });
+}
+
+async function cancelar(id) {
+  await supabaseClient
+    .from("agendamentos")
+    .delete()
+    .eq("id", id);
+
+  alert("Agendamento cancelado");
+  listarAdmin();
 }

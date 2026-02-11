@@ -3,31 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agenda Online</title>
+  <title>Sistema de Agendamento</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home">
 
-<div class="container">
-  <h1>Agendamento</h1>
-
-  <input type="text" id="nome" placeholder="Seu nome" required>
-  <input type="email" id="email" placeholder="Seu email">
-  <input type="date" id="data" required>
-  <input type="time" id="hora" required>
-
-  <button onclick="agendar()">Agendar</button>
-
-  <hr>
-
-  <h3>Consultar Agendamentos</h3>
-  <button onclick="listarAgendamentos()">Ver Agendamentos</button>
-
-  <div id="lista"></div>
+<div class="hero">
+  <h1>Agenda Inteligente</h1>
+  <p>Agende seu horário de forma rápida e segura</p>
+  <a href="agendar.html" class="btn">Agendar Agora</a>
+  <a href="admin.html" class="btn secondary">Área Administrativa</a>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
 
 </body>
 </html>

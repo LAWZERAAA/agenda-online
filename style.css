@@ -1,55 +1,32 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  background: #f4f6f9;
+body.home {
+  height: 100vh;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 20px;
-}
-
-.container {
-  background: white;
-  width: 100%;
-  max-width: 500px;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-button {
-  background: #2c3e50;
   color: white;
+}
+
+.hero {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 12px 25px;
+  background: #00c9a7;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
   font-weight: bold;
-  cursor: pointer;
   transition: 0.3s;
 }
 
-button:hover {
-  background: #1a252f;
+.btn:hover {
+  background: #00a78e;
 }
 
-.agendamento {
-  background: #ecf0f1;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
+.btn.secondary {
+  background: #ff6b6b;
 }
