@@ -6,10 +6,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn(
     '[Supabase] Variáveis de ambiente ausentes. ' +
-    'Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env (dev) e na Vercel (prod).'
+    'Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env e na Vercel.'
   );
 }
 
-// Mesmo se faltarem, tentamos criar o client para evitar travar import.
-// Operações Supabase vão dar erro depois, mas o restante da UI não quebra.
-export const supabase = createClient(supabaseUrl || 'http://localhost', supabaseAnonKey || 'anon');
+// Fallback evita travar o restante do app
+export const supabase = createClient(
+  supabaseUrl || "http://localhost",
+  supabaseAnonKey || "anon"
+);
