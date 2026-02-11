@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sistema de Agendamentos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="container">
+  <!-- Cliente -->
+  <div class="card">
+    <h2>Agendamentos</h2>
+
+    <label>Nome</label>
+    <input id="nome" type="text" placeholder="Seu nome" />
+
+    <label>WhatsApp para Contato</label>
+    <input id="contato" type="text" placeholder="(DDD) 99999-9999" />
+
+    <label>Serviço</label>
+    <select id="servico"></select>
+
+    <label>Data</label>
+    <input id="data" type="date" />
+
+    <label>Horário</label>
+    <select id="hora" disabled></select>
+    <div id="msgHorarios" class="muted" style="margin-top:6px;"></div>
+
+    <button id="btnAgendar">Agendar</button>
+
+    <div id="sucesso" class="success">Agendado com sucesso!</div>
+
+    <h3 style="margin-top:18px;">Todos os Agendamentos (Ordem Cronológica)</h3>
+    <div id="agenda"></div>
+  </div>
+
+  <!-- Admin -->
+  <div class="card">
+    <h2>Painel do Administrador</h2>
+    <button class="btn-outline" id="btnMostrarLogin">Entrar / Trocar Usuário</button>
+
+    <div id="adminLogin" style="margin-top:10px; display:none;">
+      <h3>Login</h3>
+      <input id="adminUser" type="text" placeholder="E-mail ou Usuário" />
+      <input id="adminPass" type="password" placeholder="Senha" />
+      <button id="btnLogin">Entrar</button>
+    </div>
+
+    <div id="adminArea" style="display:none;">
+      <div class="card soft" style="margin-bottom:12px;">
+        <h3>Todos os Agendamentos (Ordem Cronológica)</h3>
+        <div class="legend">
+          <span class="tag tag-past">Passado</span>
+          <span class="tag tag-today">Hoje</span>
+          <span class="tag tag-future">Futuro</span>
+        </div>
+        <div class="admin-actions">
+          <span id="adminCount" class="muted"></span>
+          <button class="btn-danger" id="btnLogout" style="float:right;">Sair</button>
+        </div>
+      </div>
+      <div id="adminList" class="admin-list"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
