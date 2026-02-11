@@ -1,6 +1,6 @@
 const supabase = window.supabase.createClient(
-  https://owfpyuwxpbfhdysokqwc.supabase.co,
-  sb_publishable_RC2UVIHXkvrbur2BRN2IXg_p6lQ99rZ
+  "SUA_URL_SUPABASE",
+  "SUA_CHAVE_PUBLICA"
 );
 
 async function agendar() {
@@ -26,5 +26,48 @@ async function agendar() {
     console.log(error);
   } else {
     document.getElementById("mensagem").innerText = "Agendamento realizado com sucesso!";
+    limparCampos();
+    carregarAgendamentos();
   }
 }
+
+function limparCampos() {
+  document.getElementById("nome").value = "";
+  document.getElementById("contato").value = "";
+  document.getElementById("data").value = "";
+  document.getElementById("hora").value = "";
+}
+
+async function carregarAgendamentos() {
+
+  const { data, error } = await supabase
+    .from("agendamentos")
+    .select("*")
+    .order("data", { ascending: true });
+
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  if (error) {
+    lista.innerHTML = "Erro ao carregar dados.";
+    console.log(error);
+    return;
+  }
+
+  if (data.length === 0) {
+    lista.innerHTML = "Nenhum agendamento encontrado.";
+    return;
+  }
+
+  data.forEach(item => {
+    lista.innerHTML += `
+      <div class="item">
+        <strong>${item.nome}</strong><br>
+        📅 ${item.data} ⏰ ${item.hora}<br>
+        📱 ${item.contato || "-"}
+      </div>
+    `;
+  });
+}
+
+window.onload = carregarAgendamentos;
