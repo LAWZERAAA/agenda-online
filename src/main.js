@@ -1,6 +1,7 @@
+import { supabase } from './supabase.js';
+
 console.log('[App] main.js carregado');
 console.log('[App] SUPABASE_URL presente?', !!import.meta.env.VITE_SUPABASE_URL);
-import { supabase } from './supabase.js';
 
 // ------------------------
 // Config do App
@@ -10,14 +11,12 @@ const START_DAY_MIN = 8 * 60;
 const END_DAY_MIN   = 17 * 60;
 const SLOT_MIN      = 60;
 
-
 const servicos = [
-  { id: "estetica_pes", nome: "Estética dos Pés", precoTexto: "R$ 40,00", duracao: 60 },
-  { id: "estetica_maos", nome: "Estética das Mãos", precoTexto: "R$ 35,00", duracao: 60 },
-  { id: "podologia_completa", nome: "Podologia Completa", precoTexto: "a partir de R$ 100,00", duracao: 60 },
-  { id: "plastica_pes", nome: "Plástica dos Pés", precoTexto: "R$ 80,00", duracao: 60 }
+  { id: "estetica_pes",       nome: "Estética dos Pés",         precoTexto: "R$ 40,00",              duracao: 60 },
+  { id: "estetica_maos",      nome: "Estética das Mãos",        precoTexto: "R$ 35,00",              duracao: 60 },
+  { id: "podologia_completa", nome: "Podologia Completa",       precoTexto: "a partir de R$ 100,00", duracao: 60 },
+  { id: "plastica_pes",       nome: "Plástica dos Pés",         precoTexto: "R$ 80,00",              duracao: 60 }
 ];
-
 
 let adminLogado = false;
 let cacheAgenda = [];
@@ -32,9 +31,20 @@ function parseDateLocal(dateStr){
   return new Date(y, m-1, d, 0, 0, 0, 0);
 }
 function hhmmParaMinutos(hhmm){ const [h,m] = (hhmm||"").split(":").map(Number); return (isNaN(h)||isNaN(m)) ? NaN : h*60+m; }
-function minutosParaHHMM(min){ if (typeof min !== "number" || isNaN(min)) return ""; const h = String(Math.floor(min/60)).padStart(2,"0"); const m = String(min%60).padStart(2,"0"); return `${h}:${m}`; }
-function intervalosSobrepoem(aInicio, aDur, bInicio, bDur){ if([aInicio,aDur,bInicio,bDur].some(v => typeof v!=="number"||isNaN(v))) return false; return (aInicio < bInicio+bDur) && (bInicio < aInicio+aDur); }
-function toDateInputValue(d){ const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,"0"); const day=String(d.getDate()).padStart(2,"0"); return `${y}-${m}-${day}`; }
+function minutosParaHHMM(min){
+  if (typeof min !== "number" || isNaN(min)) return "";
+  const h = String(Math.floor(min/60)).padStart(2,"0");
+  const m = String(min%60).padStart(2,"0");
+  return `${h}:${m}`;
+}
+function intervalosSobrepoem(aInicio, aDur, bInicio, bDur){
+  if([aInicio,aDur,bInicio,bDur].some(v => typeof v !== "number" || isNaN(v))) return false;
+  return (aInicio < bInicio + bDur) && (bInicio < aInicio + aDur);
+}
+function toDateInputValue(d){
+  const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,"0"); const day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
 function soDigitos(s){ return (s||"").replace(/\D/g,""); }
 function isSunday(dateStr){ const dt=parseDateLocal(dateStr); if(!dt) return false; return dt.getDay()===0; }
 function isPastDate(dateStr){ const hoje=new Date(); hoje.setHours(0,0,0,0); const d=parseDateLocal(dateStr); if(!d) return false; return d < hoje; }
@@ -46,7 +56,11 @@ function isPastTimeOnDate(dateStr,hhmm){
   return dt <= new Date();
 }
 function isToday(dateStr){ const dt=parseDateLocal(dateStr); if(!dt) return false; return toDateInputValue(dt) === toDateInputValue(new Date()); }
-function orderByDataHora(a,b){ const ka = `${a.data||"9999-99-99"} ${a.hora||"99:99"}`; const kb = `${b.data||"9999-99-99"} ${b.hora||"99:99"}`; return ka.localeCompare(kb); }
+function orderByDataHora(a,b){
+  const ka = `${a.data||"9999-99-99"} ${a.hora||"99:99"}`;
+  const kb = `${b.data||"9999-99-99"} ${b.hora||"99:99"}`;
+  return ka.localeCompare(kb);
+}
 const horariosBase = (()=>{ const a=[]; for(let m=START_DAY_MIN; m + SLOT_MIN <= END_DAY_MIN; m+=SLOT_MIN){ a.push(minutosParaHHMM(m)); } return a; })();
 
 function abrirWhatsApp(url){ try{ window.location.href=url; }catch(e){ window.open(url,"_blank"); } }
@@ -56,6 +70,7 @@ function abrirWhatsApp(url){ try{ window.location.href=url; }catch(e){ window.op
 // ------------------------
 function popularServicos(){
   const sel = document.getElementById("servico");
+  if (!sel) return;
   sel.innerHTML = `<option value="" disabled selected>Selecione o serviço</option>`;
   servicos.forEach(s=>{
     const op=document.createElement("option");
@@ -346,7 +361,6 @@ async function cancelarAdminById(id){
     alert("Não foi possível cancelar. Verifique se sua conta é admin.");
     return;
   }
-  // Opcional: enviar WhatsApp ao cliente (se ainda nos dados locais)
   try{
     const item = cacheAgenda.find(x => x.id === id);
     if(item){
@@ -408,14 +422,12 @@ function renderAdminList(){
     grupoEl.appendChild(row);
   });
 
-  // Contagem por grupo
   [...wrap.querySelectorAll(".date-group")].forEach(group=>{
     const items = group.querySelectorAll(".admin-item").length;
     const el = group.querySelector(".group-count");
     if(el) el.textContent = `${items} agendamento(s)`;
   });
 
-  // Bind dos botões de cancelamento
   wrap.querySelectorAll('button[data-del]').forEach(btn=>{
     btn.addEventListener('click', async (e)=>{
       const id = e.currentTarget.getAttribute('data-del');
@@ -428,7 +440,8 @@ function renderAdminList(){
 // Inicialização
 // ------------------------
 window.addEventListener('DOMContentLoaded', async ()=>{
-    console.log('[App] DOMContentLoaded');
+  console.log('[App] DOMContentLoaded');
+
   // Data mínima = hoje
   const dataEl = document.getElementById("data");
   if (dataEl) dataEl.min = toDateInputValue(new Date());
@@ -437,6 +450,8 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   const horaSel = document.getElementById("hora");
   if (horaSel) { horaSel.innerHTML = ""; horaSel.disabled = true; }
 
+  // *** IMPORTANTE: popular a lista de serviços ***
+  popularServicos();
 
   const msg = document.getElementById("msgHorarios");
   if (msg) msg.textContent = "Selecione data e serviço.";
@@ -444,15 +459,15 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   // Eventos
   document.getElementById('data')?.addEventListener('change', atualizarHorarios);
   document.getElementById('btnAgendar')?.addEventListener('click', agendar);
-  
-document.getElementById('btnMostrarLogin')?.addEventListener('click', ()=>{
-  console.log('[App] Clicou em Entrar / Trocar Usuário');
-  const loginBox = document.getElementById("adminLogin");
-  const adminArea = document.getElementById("adminArea");
-  if(adminArea && adminArea.style.display === "block") return;
-  if(loginBox) loginBox.style.display="block";
-  document.getElementById("adminUser")?.focus();
-});
+
+  document.getElementById('btnMostrarLogin')?.addEventListener('click', ()=>{
+    console.log('[App] Clicou em Entrar / Trocar Usuário');
+    const loginBox = document.getElementById("adminLogin");
+    const adminArea = document.getElementById("adminArea");
+    if(adminArea && adminArea.style.display === "block") return;
+    if(loginBox) loginBox.style.display="block";
+    document.getElementById("adminUser")?.focus();
+  });
 
   document.getElementById('btnLogin')?.addEventListener('click', loginAdmin);
   document.getElementById('btnLogout')?.addEventListener('click', logoutAdmin);

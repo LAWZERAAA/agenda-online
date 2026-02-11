@@ -1,34 +1,195 @@
+/* Base */
 * { box-sizing: border-box; }
-body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f6f7f9; color: #222; }
-.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --bg: #f6f7f9;
+  --card: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --danger: #ef4444;
+    --danger-dark: #dc2626;
+    --border: #374151;
+    --muted: #9ca3af;
+    --bg: #0f172a;
+    --card: #111827;
+  }
+}
+
+body {
+  font-family: system-ui, Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: #222;
+}
+@media (prefers-color-scheme: dark) {
+  body { color: #e5e7eb; }
+}
+
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
 .card.soft { background: #fafafa; }
+@media (prefers-color-scheme: dark) {
+  .card.soft { background: #0b1220; }
+}
+
 h2, h3 { margin: 0 0 12px; }
+
 label { display:block; margin-top:8px; font-weight:600; }
-input, select, button { width:100%; padding:10px; margin-top:6px; border:1px solid #d1d5db; border-radius:6px; }
-button { background:#2563eb; color:#fff; border:none; cursor:pointer; }
-button:hover { background:#1e40af; }
-.btn-outline { background:transparent; border:1px solid #2563eb; color:#2563eb; }
-.btn-outline:hover { background:#ebf2ff; }
-.btn-danger { background:#dc2626; }
-.btn-danger:hover { background:#b91c1c; }
-.success { display:none; margin-top:10px; padding:10px; background:#ecfdf5; color:#065f46; border:1px solid #10b981; border-radius:6px; }
-.muted { color:#6b7280; font-size: 0.95em; }
-.item, .admin-item { border:1px solid #e5e7eb; padding:12px; border-radius:8px; margin-top:8px; background:#fff; }
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+}
+@media (prefers-color-scheme: dark) {
+  input, select, button {
+    background: #0b1220;
+    border-color: var(--border);
+    color: #e5e7eb;
+  }
+}
+
+/* Estados de foco acessíveis */
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+/* Botões */
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background .15s ease, transform .05s ease;
+}
+button:hover { background: var(--primary-dark); }
+button:active { transform: translateY(1px); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+.btn-outline:hover {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: var(--danger-dark); }
+
+/* Sucesso */
+.success {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #10b981;
+  border-radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  .success {
+    background: #052e26;
+    color: #a7f3d0;
+    border-color: #10b981;
+  }
+}
+
+/* Texto secundário */
+.muted { color: var(--muted); font-size: 0.95em; }
+
+/* Itens de lista */
+.item, .admin-item {
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+  background: var(--card);
+}
+
+/* Legenda / tags */
 .legend { display:flex; gap:8px; margin: 8px 0; }
-.tag { padding:2px 8px; border-radius:99px; font-size:12px; border:1px solid #d1d5db; }
-.tag-past { background:#fee2e2; color:#991b1b; }
-.tag-today { background:#e0f2fe; color:#075985; }
+.tag {
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 12px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+}
+.tag-past   { background:#fee2e2; color:#991b1b; }
+.tag-today  { background:#e0f2fe; color:#075985; }
 .tag-future { background:#ecfeff; color:#155e75; }
+
 .date-group { margin-bottom: 12px; }
-.group-header { display:flex; align-items:center; justify-content:space-between; background:#f9fafb; padding:8px 12px; border-radius:6px; border:1px solid #e5e7eb; }
+.group-header {
+  display:flex; align-items:center; justify-content:space-between;
+  background:#f9fafb; padding:8px 12px; border-radius:6px; border:1px solid var(--border);
+}
 .group-title { font-weight:600; }
-.chip { display:inline-block; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; padding:2px 8px; border-radius:99px; margin-right:6px; font-size:12px; }
+
+.chip {
+  display:inline-block;
+  background:#eef2ff; color:#3730a3;
+  border:1px solid #c7d2fe;
+  padding:2px 8px; border-radius:99px; margin-right:6px; font-size:12px;
+}
+
 .badge { font-size: 12px; padding: 2px 6px; border-radius: 4px; border:1px solid #d1d5db; }
 .badge.past { background:#fee2e2; color:#991b1b; }
 .badge.today { background:#e0f2fe; color:#075985; }
 .badge.future { background:#ecfeff; color:#155e75; }
 
+/* Ajudas visuais */
+select:disabled,
+input:disabled,
+button:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+
+/* Acessibilidade: esconder visualmente mas manter para leitores de tela */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* Responsivo */
 @media (max-width: 900px) {
   .container { grid-template-columns: 1fr; }
+  input[type="date"] { width: 100%; }
 }

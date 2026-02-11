@@ -7,35 +7,44 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="description" content="Agendamento de serviços com painel administrativo e atualização em tempo real." />
 
-  <!-- CORRETO: link CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+<noscript>
+  <div style="padding:12px; background:#fee2e2; color:#991b1b; text-align:center;">
+    Este site precisa de JavaScript habilitado para funcionar corretamente.
+  </div>
+</noscript>
+
 <div class="container">
   <!-- Cliente -->
   <div class="card">
     <h2>Agendamentos</h2>
 
-    <label>Nome</label>
+    <label for="nome">Nome</label>
     <input id="nome" type="text" placeholder="Seu nome" />
 
-    <label>WhatsApp para Contato</label>
-    <input id="contato" type="text" placeholder="(DDD) 99999-9999" />
+    <label for="contato">WhatsApp para Contato</label>
+    <input id="contato" type="text" placeholder="(DDD) 99999-9999" inputmode="numeric" />
 
-    <label>Serviço</label>
+    <label for="servico">Serviço</label>
     <select id="servico"></select>
 
-    <label>Data</label>
+    <label for="data">Data</label>
     <input id="data" type="date" />
 
-    <label>Horário</label>
+    <label for="hora">Horário</label>
     <select id="hora" disabled></select>
     <div id="msgHorarios" class="muted" style="margin-top:6px;"></div>
 
-    <button id="btnAgendar">Agendar</button>
+    <button id="btnAgendar" type="button">Agendar</button>
 
-    <div id="sucesso" class="success">Agendado com sucesso!</div>
+    <div id="sucesso" class="success" role="status" aria-live="polite">Agendado com sucesso!</div>
 
     <h3 style="margin-top:18px;">Todos os Agendamentos (Ordem Cronológica)</h3>
     <div id="agenda"></div>
@@ -44,13 +53,15 @@
   <!-- Admin -->
   <div class="card">
     <h2>Painel do Administrador</h2>
-    <button class="btn-outline" id="btnMostrarLogin">Entrar / Trocar Usuário</button>
+    <button class="btn-outline" id="btnMostrarLogin" type="button">Entrar / Trocar Usuário</button>
 
     <div id="adminLogin" style="margin-top:10px; display:none;">
       <h3>Login</h3>
-      <input id="adminUser" type="text" placeholder="E-mail ou Usuário" />
-      <input id="adminPass" type="password" placeholder="Senha" />
-      <button id="btnLogin">Entrar</button>
+      <label for="adminUser" class="visually-hidden">E-mail ou Usuário</label>
+      <input id="adminUser" type="text" placeholder="E-mail ou Usuário" autocomplete="username" />
+      <label for="adminPass" class="visually-hidden">Senha</label>
+      <input id="adminPass" type="password" placeholder="Senha" autocomplete="current-password" />
+      <button id="btnLogin" type="button">Entrar</button>
     </div>
 
     <div id="adminArea" style="display:none;">
@@ -63,7 +74,7 @@
         </div>
         <div class="admin-actions">
           <span id="adminCount" class="muted"></span>
-          <button class="btn-danger" id="btnLogout" style="float:right;">Sair</button>
+          <button class="btn-danger" id="btnLogout" type="button" style="float:right;">Sair</button>
         </div>
       </div>
       <div id="adminList" class="admin-list"></div>
@@ -71,7 +82,7 @@
   </div>
 </div>
 
-<!-- CORRETO: importa JS como módulo -->
+<!-- JS (Vite / módulo) -->
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>
