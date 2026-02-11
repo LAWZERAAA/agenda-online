@@ -1,41 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Agenda Online</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
+  <h1>Agendamento</h1>
 
-  <h1>📅 Sistema de Agendamento</h1>
+  <input type="text" id="nome" placeholder="Seu nome">
+  <input type="email" id="email" placeholder="Seu email">
+  <input type="date" id="data">
+  <input type="time" id="hora">
 
-  <div class="card">
-    <h2>Novo Agendamento</h2>
+  <button onclick="agendar()">Agendar</button>
 
-    <input type="text" id="nome" placeholder="Seu nome">
-    <input type="text" id="contato" placeholder="WhatsApp">
-    <input type="date" id="data">
-    <input type="time" id="hora">
+  <hr>
 
-    <button onclick="agendar()">Agendar</button>
+  <h3>Consultar Agendamentos</h3>
+  <button onclick="listarAgendamentos()">Ver Agendamentos</button>
 
-    <p id="mensagem"></p>
-  </div>
-
-  <div class="card">
-    <h2>📋 Agendamentos Salvos</h2>
-    <button onclick="carregarAgendamentos()">Atualizar Lista</button>
-    <div id="lista"></div>
-  </div>
-
+  <div id="lista"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 </body>
 </html>

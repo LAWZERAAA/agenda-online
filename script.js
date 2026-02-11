@@ -1,73 +1,51 @@
-const supabase = window.supabase.createClient(
-  "SUA_URL_SUPABASE",
-  "SUA_CHAVE_PUBLICA"
-);
+const SUPABASE_URL = https://owfpyuwxpbfhdysokqwc.supabase.co;
+const SUPABASE_KEY = sb_publishable_RC2UVIHXkvrbur2BRN2IXg_p6lQ99rZ;
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function agendar() {
-
   const nome = document.getElementById("nome").value;
-  const contato = document.getElementById("contato").value;
+  const email = document.getElementById("email").value;
   const data = document.getElementById("data").value;
   const hora = document.getElementById("hora").value;
 
   if (!nome || !data || !hora) {
-    document.getElementById("mensagem").innerText = "Preencha todos os campos!";
+    alert("Preencha os campos obrigatórios");
     return;
   }
 
   const { error } = await supabase
     .from("agendamentos")
-    .insert([
-      { nome, contato, data, hora }
-    ]);
+    .insert([{ nome, email, data, hora }]);
 
   if (error) {
-    document.getElementById("mensagem").innerText = "Erro ao salvar!";
+    alert("Erro ao salvar");
     console.log(error);
   } else {
-    document.getElementById("mensagem").innerText = "Agendamento realizado com sucesso!";
-    limparCampos();
-    carregarAgendamentos();
+    alert("Agendamento realizado!");
   }
 }
 
-function limparCampos() {
-  document.getElementById("nome").value = "";
-  document.getElementById("contato").value = "";
-  document.getElementById("data").value = "";
-  document.getElementById("hora").value = "";
-}
-
-async function carregarAgendamentos() {
-
+async function listarAgendamentos() {
   const { data, error } = await supabase
     .from("agendamentos")
     .select("*")
     .order("data", { ascending: true });
 
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
   if (error) {
-    lista.innerHTML = "Erro ao carregar dados.";
     console.log(error);
     return;
   }
 
-  if (data.length === 0) {
-    lista.innerHTML = "Nenhum agendamento encontrado.";
-    return;
-  }
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
   data.forEach(item => {
     lista.innerHTML += `
-      <div class="item">
+      <div class="agendamento">
         <strong>${item.nome}</strong><br>
-        📅 ${item.data} ⏰ ${item.hora}<br>
-        📱 ${item.contato || "-"}
+        ${item.data} às ${item.hora}
       </div>
     `;
   });
 }
-
-window.onload = carregarAgendamentos;
