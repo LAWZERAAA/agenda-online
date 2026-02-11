@@ -1,0 +1,6 @@
+git init
+git remote add origin https://github.com/<seu-usuario>/agendamento-supabase.git
+npm i
+git add .
+git commit -m "Agendamentos: Supabase + Vite + Vercel"
+git push -u origin main
