@@ -1,3 +1,5 @@
+console.log('[App] main.js carregado');
+console.log('[App] SUPABASE_URL presente?', !!import.meta.env.VITE_SUPABASE_URL);
 import { supabase } from './supabase.js';
 
 // ------------------------
@@ -426,6 +428,7 @@ function renderAdminList(){
 // Inicialização
 // ------------------------
 window.addEventListener('DOMContentLoaded', async ()=>{
+    console.log('[App] DOMContentLoaded');
   // Data mínima = hoje
   const dataEl = document.getElementById("data");
   if (dataEl) dataEl.min = toDateInputValue(new Date());
@@ -443,10 +446,11 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   document.getElementById('btnAgendar')?.addEventListener('click', agendar);
   
 document.getElementById('btnMostrarLogin')?.addEventListener('click', ()=>{
+  console.log('[App] Clicou em Entrar / Trocar Usuário');
   const loginBox = document.getElementById("adminLogin");
   const adminArea = document.getElementById("adminArea");
-  if(adminArea && adminArea.style.display === "block") return; // já logado
-  if(loginBox) loginBox.style.display="block";                  // abre o popup
+  if(adminArea && adminArea.style.display === "block") return;
+  if(loginBox) loginBox.style.display="block";
   document.getElementById("adminUser")?.focus();
 });
 
